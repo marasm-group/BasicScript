@@ -11,7 +11,7 @@ public class Simplifier {
                 OperatorExpression oe = (OperatorExpression) e;
                 Expression l = simplify(oe.getLeft());
                 Expression r = simplify(oe.getRight());
-                final OperatorExpression res = new OperatorExpression(oe.getJasic(), l, oe.getOperator(), r);
+                final OperatorExpression res = OperatorExpression.create(oe.getJasic(), l, oe.getOperator(), r);
                 if (l instanceof Value && r instanceof Value) {
                     return res.evaluate();
                 }

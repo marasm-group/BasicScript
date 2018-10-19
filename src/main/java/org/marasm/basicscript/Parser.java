@@ -129,7 +129,7 @@ public class Parser {
                 match(TokenType.EQUALS)) {
             char operator = last(1).text.charAt(0);
             Expression right = atomic();
-            expression = new OperatorExpression(jasic, expression, operator, right);
+            expression = OperatorExpression.create(jasic, expression, String.valueOf(operator), right);
         }
 
         return Simplifier.simplify(expression);
