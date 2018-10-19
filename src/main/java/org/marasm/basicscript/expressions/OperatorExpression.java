@@ -9,6 +9,7 @@ import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Set;
 
 /**
  * An operator expression evaluates two expressions and then performs some
@@ -18,8 +19,13 @@ public abstract class OperatorExpression implements Expression {
     protected static Map<String, OperatorExpressionSupplier> operatorExpressions = new HashMap<>();
 
     static {
-        Reflections reflections = new Reflections("org.marasm.basicscript.expressions.operators");
-        reflections.getSubTypesOf(OperatorExpression.class).forEach(aClass -> {
+        registerOperators();
+    }
+
+    private static void registerOperators() {
+        Reflections reflections = new Reflections("");
+        Set<Class<? extends OperatorExpression>> operatorClasses = reflections.getSubTypesOf(OperatorExpression.class);
+        operatorClasses.forEach(aClass -> {
             try {
                 Constructor<? extends OperatorExpression> constructor = aClass.getConstructor(Jasic.class, Expression.class, Expression.class);
                 constructor.setAccessible(true);
