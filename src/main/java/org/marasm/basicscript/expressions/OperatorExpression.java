@@ -62,6 +62,9 @@ public class OperatorExpression implements Expression {
             case '/':
                 return new NumberValue(leftVal.toNumber() /
                         rightVal.toNumber());
+            case '%':
+                return new NumberValue(leftVal.toNumber() %
+                        rightVal.toNumber());
             case '<':
                 // Coerce to the left argument's type, then compare.
                 if (leftVal instanceof NumberValue) {

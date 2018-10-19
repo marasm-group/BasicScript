@@ -168,11 +168,10 @@ public class Jasic {
                 Reader reader = new BufferedReader(input);
 
                 StringBuilder builder = new StringBuilder();
-                char[] buffer = new char[8192];
                 int read;
 
-                while ((read = reader.read(buffer, 0, buffer.length)) > 0) {
-                    builder.append(buffer, 0, read);
+                while ((read = reader.read()) > 0) {
+                    builder.append((char) read);
                 }
 
                 // HACK: The parser expects every statement to end in a newline,

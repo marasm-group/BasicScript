@@ -12,13 +12,15 @@ public class NumberValue implements Value {
 
     @Override
     public String toString() {
-        return Double.toString(value);
+        return Double.toString(value).replaceAll("\\.0$", "");
     }
 
+    @Override
     public double toNumber() {
         return value;
     }
 
+    @Override
     public Value evaluate() {
         return this;
     }

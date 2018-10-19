@@ -20,11 +20,11 @@ public class Tokenizer {
         TokenizeState state = TokenizeState.DEFAULT;
 
         // Many tokens are a single character, like operators and ().
-        String charTokens = "\n=+-*/<>()";
+        String charTokens = "\n=+-*/%<>()";
         TokenType[] tokenTypes = {TokenType.LINE, TokenType.EQUALS,
                 TokenType.OPERATOR, TokenType.OPERATOR, TokenType.OPERATOR,
                 TokenType.OPERATOR, TokenType.OPERATOR, TokenType.OPERATOR,
-                TokenType.LEFT_PAREN, TokenType.RIGHT_PAREN
+                TokenType.OPERATOR, TokenType.LEFT_PAREN, TokenType.RIGHT_PAREN
         };
 
         // Scan through the code one character at a time, building up the list
@@ -73,10 +73,9 @@ public class Tokenizer {
                     break;
 
                 case NUMBER:
-                    // HACK: Negative numbers and floating points aren't supported.
+                    // HACK: Negative numbers aren't supported.
                     // To get a negative number, just do 0 - <your number>.
-                    // To get a floating point, divide.
-                    if (Character.isDigit(c)) {
+                    if (Character.isDigit(c) || c == '.') {
                         token += c;
                     } else {
                         tokens.add(new Token(token, TokenType.NUMBER));
@@ -126,7 +125,7 @@ public class Tokenizer {
             long count2 = word.chars().filter(ch -> ch == ']').count();
             count = count1 - count2;
         }
-        if(count != 0) {
+        if (count != 0) {
             return true;
         }
         return Character.isLetterOrDigit(c) || c == '_' || c == '.' || c == '[';
