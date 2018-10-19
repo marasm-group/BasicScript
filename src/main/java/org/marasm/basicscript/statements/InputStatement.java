@@ -38,4 +38,9 @@ public class InputStatement implements Statement {
             // HACK: Just ignore the problem.
         }
     }
+
+    @Override
+    public String decodedString() {
+        return "input " + variable.decodedString();
+    }
 }

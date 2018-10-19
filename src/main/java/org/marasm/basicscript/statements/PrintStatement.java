@@ -13,7 +13,13 @@ public class PrintStatement implements Statement {
         this.expression = expression;
     }
 
+    @Override
     public void execute() {
         System.out.println(expression.evaluate().toString());
+    }
+
+    @Override
+    public String decodedString() {
+        return "print " + expression.decodedString();
     }
 }

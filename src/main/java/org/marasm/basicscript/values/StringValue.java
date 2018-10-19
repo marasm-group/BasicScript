@@ -1,5 +1,7 @@
 package org.marasm.basicscript.values;
 
+import org.apache.commons.text.StringEscapeUtils;
+
 /**
  * A string value.
  */
@@ -15,11 +17,19 @@ public class StringValue implements Value {
         return value;
     }
 
+    @Override
     public double toNumber() {
         return Double.parseDouble(value);
     }
 
+    @Override
     public Value evaluate() {
         return this;
+    }
+
+    @Override
+    public String decodedString() {
+        return "\"" + StringEscapeUtils.escapeJava(toString()) + "\"";
+
     }
 }

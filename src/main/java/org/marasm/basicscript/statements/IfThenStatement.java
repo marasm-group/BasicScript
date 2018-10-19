@@ -28,4 +28,9 @@ public class IfThenStatement implements Statement {
             }
         }
     }
+
+    @Override
+    public String decodedString() {
+        return "if " + condition.decodedString() + " then " + label;
+    }
 }

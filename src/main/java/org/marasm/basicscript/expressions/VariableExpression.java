@@ -22,6 +22,29 @@ public class VariableExpression implements Expression {
     private final Expression variable;
     private final Jasic jasic;
 
+    public VariableExpression(String variable, Jasic jasic) {
+        this.jasic = jasic;
+        this.variable = parseVariableExpression(variable, jasic);
+    }
+
+    public static Expression parseVariableExpression(String variable, Jasic jasic) {
+        if (!variable.contains("[")) {
+            return new StringValue(variable);
+        }
+        List<String> strings = new LinkedList<>(Arrays.asList(variable.split("\\[")));
+        strings.remove(0);
+        List<Expression> collect = strings.stream()
+                .map(s -> s.split("]")[0])
+                .map(s -> new Parser(jasic, Tokenizer.tokenize(s + "\n")).expression())
+                .map(Simplifier::simplify)
+                .collect(Collectors.toList());
+        return new StringValue(collect.stream()
+                .map(Expression::evaluate)
+                .map(Value::toString)
+                .map(s -> "[" + s + "]")
+                .collect(Collectors.joining()));
+    }
+
     @Override
     public Value evaluate() {
         String name = variable.evaluate().toString();
@@ -31,26 +54,10 @@ public class VariableExpression implements Expression {
         return new NumberValue(0);
     }
 
-    public VariableExpression(String variable, Jasic jasic) {
-        this.jasic = jasic;
-        this.variable = parseVariableExpression(variable, jasic);
+    @Override
+    public String decodedString() {
+        return variable.toString();
     }
 
-    public static Expression parseVariableExpression(String variable, Jasic jasic) {
-        if (!variable.contains("[")) {
-            return () -> new StringValue(variable);
-        }
-        List<String> strings = new LinkedList<>(Arrays.asList(variable.split("\\[")));
-        strings.remove(0);
-        List<Expression> collect = strings.stream()
-                .map(s -> s.split("]")[0])
-                .map(s -> new Parser(jasic, Tokenizer.tokenize(s + "\n")).expression())
-                .map(Simplifier::simplify)
-                .collect(Collectors.toList());
-        return () -> new StringValue(collect.stream()
-                .map(Expression::evaluate)
-                .map(Value::toString)
-                .map(s -> "[" + s + "]")
-                .collect(Collectors.joining()));
-    }
+
 }

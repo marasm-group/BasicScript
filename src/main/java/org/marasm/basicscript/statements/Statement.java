@@ -11,4 +11,6 @@ public interface Statement {
      * statements will change the current statement, etc.
      */
     void execute();
+
+    String decodedString();
 }

@@ -11,6 +11,7 @@ import java.nio.charset.Charset;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 /**
  * This defines a single class that contains an entire interpreter for a
@@ -209,12 +210,27 @@ public class Jasic {
         Parser parser = new Parser(this, tokens);
         List<Statement> statements = parser.parse(labels);
 
+        //outputSource(System.out, labels, statements);
+
         // Interpret until we're done.
         currentStatement = 0;
         while (currentStatement < statements.size()) {
             int thisStatement = currentStatement;
             currentStatement++;
             statements.get(thisStatement).execute();
+        }
+    }
+
+    public void outputSource(PrintStream out, Map<String, Integer> labels, List<Statement> statements) {
+        Map<Integer, String> iLabels = labels.entrySet()
+                .stream()
+                .collect(Collectors.toMap(Map.Entry::getValue, Map.Entry::getKey));
+        for (int i = 0; i < statements.size(); i++) {
+            if (iLabels.containsKey(i)) {
+                out.println(iLabels.get(i) + ": " + statements.get(i).decodedString());
+            } else {
+                out.println(statements.get(i).decodedString());
+            }
         }
     }
 }

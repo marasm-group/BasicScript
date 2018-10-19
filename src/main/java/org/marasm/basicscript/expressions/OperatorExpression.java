@@ -22,6 +22,19 @@ public abstract class OperatorExpression implements Expression {
         registerOperators();
     }
 
+    @Getter
+    private final Expression left;
+    @Getter
+    private final Expression right;
+    @Getter
+    private Jasic jasic;
+
+    public OperatorExpression(Jasic jasic, Expression left, Expression right) {
+        this.jasic = jasic;
+        this.left = left;
+        this.right = right;
+    }
+
     private static void registerOperators() {
         Reflections reflections = new Reflections("");
         Set<Class<? extends OperatorExpression>> operatorClasses = reflections.getSubTypesOf(OperatorExpression.class);
@@ -35,19 +48,6 @@ public abstract class OperatorExpression implements Expression {
                 e.printStackTrace();
             }
         });
-    }
-
-    @Getter
-    private final Expression left;
-    @Getter
-    private final Expression right;
-    @Getter
-    private Jasic jasic;
-
-    public OperatorExpression(Jasic jasic, Expression left, Expression right) {
-        this.jasic = jasic;
-        this.left = left;
-        this.right = right;
     }
 
     public static void registerOperator(String operator, OperatorExpressionSupplier supplier) {
@@ -67,6 +67,10 @@ public abstract class OperatorExpression implements Expression {
         return operatorExpression;
     }
 
+    public static Class dummy() {
+        return String.class;
+    }
+
     public abstract Value evaluate(Value leftVal, Value rightVal);
 
     @Override
@@ -78,13 +82,13 @@ public abstract class OperatorExpression implements Expression {
 
     public abstract String getOperator();
 
+    @Override
+    public String decodedString() {
+        return "(" + left.decodedString() + " " + getOperator() + " " + right.decodedString() + ")";
+    }
+
     public static interface OperatorExpressionSupplier<T extends OperatorExpression> {
         T get(Jasic jasic, Expression left, Expression right) throws IllegalAccessException, InvocationTargetException, InstantiationException;
     }
-
-    public static Class dummy() {
-        return String.class;
-    }
-
 
 }

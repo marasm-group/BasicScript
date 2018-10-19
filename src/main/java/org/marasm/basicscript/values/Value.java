@@ -22,6 +22,7 @@ public interface Value extends Expression {
      * Value types override this to convert themselves to a string
      * representation.
      */
+    @Override
     String toString();
 
     /**
@@ -29,4 +30,9 @@ public interface Value extends Expression {
      * representation.
      */
     double toNumber();
+
+    @Override
+    default String decodedString() {
+        return toString();
+    }
 }

@@ -24,4 +24,12 @@ public class NumberValue implements Value {
     public Value evaluate() {
         return this;
     }
+
+    @Override
+    public String decodedString() {
+        if (toNumber() >= 0) {
+            return toString();
+        }
+        return "0 " + toString();
+    }
 }

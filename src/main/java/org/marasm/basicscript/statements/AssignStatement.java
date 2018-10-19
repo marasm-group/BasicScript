@@ -1,8 +1,8 @@
 package org.marasm.basicscript.statements;
 
 import org.marasm.basicscript.Jasic;
-import org.marasm.basicscript.expressions.VariableExpression;
 import org.marasm.basicscript.expressions.Expression;
+import org.marasm.basicscript.expressions.VariableExpression;
 
 /**
  * An assignment statement evaluates an expression and stores the result in
@@ -20,7 +20,13 @@ public class AssignStatement implements Statement {
         this.variable = VariableExpression.parseVariableExpression(variableName, jasic);
     }
 
+    @Override
     public void execute() {
         jasic.getVariables().put(variable.evaluate().toString(), value.evaluate());
+    }
+
+    @Override
+    public String decodedString() {
+        return variable.toString() + " = " + value.decodedString();
     }
 }

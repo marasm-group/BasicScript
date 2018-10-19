@@ -18,4 +18,9 @@ public class GotoStatement implements Statement {
             jasic.setCurrentStatement(jasic.getLabels().get(label));
         }
     }
+
+    @Override
+    public String decodedString() {
+        return "goto " + label;
+    }
 }
