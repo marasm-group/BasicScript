@@ -26,7 +26,7 @@ import java.util.Map;
  */
 public class Parser {
     private final List<Token> tokens;
-    private Jasic jasic;
+    private final Jasic jasic;
     private int position;
 
     // The following functions each represent one grammatical part of the
@@ -53,6 +53,7 @@ public class Parser {
 
         while (true) {
             // Ignore empty lines.
+            //noinspection StatementWithEmptyBody
             while (match(TokenType.LINE)) {
             }
 
@@ -101,7 +102,7 @@ public class Parser {
 
     /**
      * Parses a series of binary operator expressions into a single
-     * expression. In Jasic, all operators have the same predecence and
+     * expression. In Jasic, all operators have the same priority and
      * associate left-to-right. That means it will interpret:
      * 1 + 2 * 3 - 4 / 5
      * like:
@@ -164,7 +165,7 @@ public class Parser {
 
     /**
      * Consumes the next two tokens if they are the given type (in order).
-     * Consumes no tokens if either check fais.
+     * Consumes no tokens if either check fails.
      *
      * @param type1 Expected type of the next tokens.
      * @param type2 Expected type of the subsequent tokens.

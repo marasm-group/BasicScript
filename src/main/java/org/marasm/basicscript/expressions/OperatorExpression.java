@@ -16,7 +16,7 @@ import java.util.Set;
  * arithmetic operation on the results.
  */
 public abstract class OperatorExpression implements Expression {
-    protected static Map<String, OperatorExpressionSupplier> operatorExpressions = new HashMap<>();
+    private static final Map<String, OperatorExpressionSupplier> operatorExpressions = new HashMap<>();
 
     static {
         registerOperators();
@@ -29,7 +29,7 @@ public abstract class OperatorExpression implements Expression {
     @Getter
     private Jasic jasic;
 
-    public OperatorExpression(Jasic jasic, Expression left, Expression right) {
+    protected OperatorExpression(Jasic jasic, Expression left, Expression right) {
         this.jasic = jasic;
         this.left = left;
         this.right = right;
@@ -71,7 +71,7 @@ public abstract class OperatorExpression implements Expression {
         return String.class;
     }
 
-    public abstract Value evaluate(Value leftVal, Value rightVal);
+    protected abstract Value evaluate(Value leftVal, Value rightVal);
 
     @Override
     public Value evaluate() {
@@ -87,7 +87,7 @@ public abstract class OperatorExpression implements Expression {
         return "(" + left.decodedString() + " " + getOperator() + " " + right.decodedString() + ")";
     }
 
-    public static interface OperatorExpressionSupplier<T extends OperatorExpression> {
+    public interface OperatorExpressionSupplier<T extends OperatorExpression> {
         T get(Jasic jasic, Expression left, Expression right) throws IllegalAccessException, InvocationTargetException, InstantiationException;
     }
 
