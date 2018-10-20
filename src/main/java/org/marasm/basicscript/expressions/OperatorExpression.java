@@ -50,10 +50,6 @@ public abstract class OperatorExpression implements Expression {
         });
     }
 
-    public static void registerOperator(String operator, OperatorExpressionSupplier supplier) {
-        operatorExpressions.put(operator, supplier);
-    }
-
     public static OperatorExpression create(Jasic jasic, Expression left, String operator, Expression right) {
         OperatorExpression operatorExpression = null;
         try {
@@ -65,10 +61,6 @@ public abstract class OperatorExpression implements Expression {
             throw new Error("Unknown operator '" + operator + "'");
         }
         return operatorExpression;
-    }
-
-    public static Class dummy() {
-        return String.class;
     }
 
     protected abstract Value evaluate(Value leftVal, Value rightVal);

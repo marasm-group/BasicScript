@@ -148,7 +148,7 @@ public class Parser {
             // A word is a reference to a variable.
             return new VariableExpression(last(1).text, jasic);
         } else if (match(TokenType.NUMBER)) {
-            return new NumberValue(Double.parseDouble(last(1).text));
+            return new NumberValue(last(1).text);
         } else if (match(TokenType.STRING)) {
             return new StringValue(last(1).text);
         } else if (match(TokenType.LEFT_PAREN)) {

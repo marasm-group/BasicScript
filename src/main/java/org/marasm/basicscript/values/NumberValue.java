@@ -10,6 +10,10 @@ public class NumberValue implements Value {
         this.value = value;
     }
 
+    public NumberValue(String value) {
+        this(Double.parseDouble(value));
+    }
+
     @Override
     public String toString() {
         return Double.toString(value).replaceAll("\\.0$", "");
