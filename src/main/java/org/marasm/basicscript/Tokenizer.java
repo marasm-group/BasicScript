@@ -20,7 +20,8 @@ public class Tokenizer {
         TokenizeState state = TokenizeState.DEFAULT;
 
         // Many tokens are a single character, like operators and ().
-        String charTokens = "\n=+-*/%<>()";
+        String operatorsTokens = "=+-*/%<>";
+        String charTokens = "\n" + operatorsTokens + "()";
         TokenType[] tokenTypes = {TokenType.LINE, TokenType.EQUALS,
                 TokenType.OPERATOR, TokenType.OPERATOR, TokenType.OPERATOR,
                 TokenType.OPERATOR, TokenType.OPERATOR, TokenType.OPERATOR,
@@ -42,8 +43,14 @@ public class Tokenizer {
             switch (state) {
                 case DEFAULT:
                     if (charTokens.indexOf(c) != -1) {
-                        tokens.add(new Token(Character.toString(c),
-                                tokenTypes[charTokens.indexOf(c)]));
+                        if (operatorsTokens.contains(Character.toString(c)) && operatorsTokens.contains(Character.toString(prevC))) {
+                            int index = tokens.size() - 1;
+                            Token prevToken = tokens.get(index);
+                            tokens.remove(index);
+                            tokens.add(new Token(Character.toString(prevC) + Character.toString(c), prevToken.type));
+                        } else {
+                            tokens.add(new Token(Character.toString(c), tokenTypes[charTokens.indexOf(c)]));
+                        }
                     } else if (Character.isLetter(c)) {
                         token += c;
                         state = TokenizeState.WORD;

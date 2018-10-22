@@ -128,9 +128,9 @@ public class Parser {
         // Keep building operator expressions as long as we have operators.
         while (match(TokenType.OPERATOR) ||
                 match(TokenType.EQUALS)) {
-            char operator = last(1).text.charAt(0);
+            String operator = last(1).text;
             Expression right = atomic();
-            expression = OperatorExpression.create(jasic, expression, String.valueOf(operator), right);
+            expression = OperatorExpression.create(jasic, expression, operator, right);
         }
 
         return Simplifier.simplify(expression);
